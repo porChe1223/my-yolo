@@ -685,12 +685,13 @@ class DSC(object):
         """
         self.num_batch = input_shape[0]
         self.num_channels = input_shape[1]
-    """
-    input: offset [B,2*K,W,H]  K: Kernel size (2*K: 2D image, deformation contains <x_offset> and <y_offset>)
-    output_x: [B,1,W,K*H]   coordinate map
-    output_y: [B,1,K*W,H]   coordinate map
-    """
+        
     def _coordinate_map_3D(self, offset, if_offset):
+        """
+        input: offset [B,2*K,W,H]  K: Kernel size (2*K: 2D image, deformation contains <x_offset> and <y_offset>)
+        output_x: [B,1,W,K*H]   coordinate map
+        output_y: [B,1,K*W,H]   coordinate map
+        """
         device = offset.device
         # offset
         y_offset, x_offset = torch.split(offset, self.num_points, dim=1)
@@ -809,11 +810,12 @@ class DSC(object):
                 self.num_batch, 1 * self.width, self.num_points * self.height
             ])
             return y_new, x_new
-    """
-    input: input feature map [N,C,D,W,H]；coordinate map [N,K*D,K*W,K*H] 
-    output: [N,1,K*D,K*W,K*H]  deformed feature map
-    """
+        
     def _bilinear_interpolate_3D(self, input_feature, y, x):
+        """
+        input: input feature map [N,C,D,W,H]；coordinate map [N,K*D,K*W,K*H] 
+        output: [N,1,K*D,K*W,K*H]  deformed feature map
+        """
         device = input_feature.device
         y = y.reshape([-1]).float()
         x = x.reshape([-1]).float()
@@ -937,6 +939,7 @@ class DSConv(nn.Module):
         self.extend_scope = extend_scope
         self.morph = morph
         self.if_offset = if_offset
+
     def forward(self, f):
         offset = self.offset_conv(f)
         offset = self.bn(offset)
