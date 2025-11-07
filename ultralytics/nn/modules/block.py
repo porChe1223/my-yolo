@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 from ultralytics.utils.torch_utils import fuse_conv_and_bn
 
-from .conv import Conv, DWConv, GhostConv, LightConv, RepConv, autopad
+from .conv import Conv, DWConv, DySnakeConv, GhostConv, LightConv, RepConv, autopad
 from .transformer import TransformerBlock
 
 __all__ = (
@@ -52,6 +52,8 @@ __all__ = (
     "ResNetLayer",
     "SCDown",
     "TorchVision",
+    "DySnakeConvBottleneck", # subtleyolov8-dysnakeconv
+    "C2fDySnakeConv", # subtleyolov8-dysnakeconv
 )
 
 
@@ -1943,3 +1945,21 @@ class SAVPE(nn.Module):
         aggregated = score.transpose(-2, -3) @ x.reshape(B, self.c, C // self.c, -1).transpose(-1, -2)
 
         return F.normalize(aggregated.transpose(-2, -3).reshape(B, Q, -1), dim=-1, p=2)
+
+
+class BottleneckDySnakeConv(Bottleneck):
+    """Standard bottleneck with DySnakeConv."""
+    def __init__(self, c1, c2, shortcut=True, g=1, k=(3, 3), e=0.5):  # ch_in, ch_out, shortcut, groups, kernels, expand
+        super().__init__(c1, c2, shortcut, g, k, e)
+        c_ = int(c2 * e)  # hidden channels
+        self.cv2 = DySnakeConv(c_, c2, k[1])
+        self.cv3 = Conv(c2 * 3, c2, k=1)
+    def forward(self, x):
+        """'forward()' applies the YOLOv5 FPN to input data."""
+        return x + self.cv3(self.cv2(self.cv1(x))) if self.add else self.cv3(self.cv2(self.cv1(x)))
+
+
+class C2fDySnakeConv(C2f):
+    def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5):
+        super().__init__(c1, c2, n, shortcut, g, e)
+        self.m = nn.ModuleList(BottleneckDySnakeConv(self.c, self.c, shortcut, g, k=(3, 3), e=1.0) for _ in range(n))
