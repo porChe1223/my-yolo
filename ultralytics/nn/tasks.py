@@ -29,9 +29,11 @@ from ultralytics.nn.modules import (
     ADown,
     Bottleneck,
     BottleneckCSP,
+    BottleneckDySnakeConv, # subtleyolov8-dysnakeconv
     C2f,
     C2fAttn,
     C2fCIB,
+    C2fDySnakeConv, # subtleyolov8-dysnakeconv
     C2fPSA,
     C3Ghost,
     C3k2,
@@ -44,8 +46,10 @@ from ultralytics.nn.modules import (
     Conv2,
     ConvTranspose,
     Detect,
+    DSConv, # subtleyolov8-dysnakeconv
     DWConv,
     DWConvTranspose2d,
+    DySnakeConv, # subtleyolov8-dysnakeconv
     Focus,
     GhostBottleneck,
     GhostConv,
@@ -1553,6 +1557,10 @@ def parse_model(d, ch, verbose=True):
             SCDown,
             C2fCIB,
             A2C2f,
+            DSConv, # subtleyolov8-dysnakeconv
+            DySnakeConv, # subtleyolov8-dysnakeconv
+            BottleneckDySnakeConv, # subtleyolov8-dysnakeconv
+            C2fDySnakeConv, # subtleyolov8-dysnakeconv
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1572,6 +1580,7 @@ def parse_model(d, ch, verbose=True):
             C2fCIB,
             C2PSA,
             A2C2f,
+            C2fDySnakeConv,
         }
     )
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
