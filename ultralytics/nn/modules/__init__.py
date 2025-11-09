@@ -61,6 +61,7 @@ from .block import (
     TorchVision,
     BottleneckDySnakeConv, # subtleyolov8-dysnakeconv
     C2fDySnakeConv, # subtleyolov8-dysnakeconv
+    EMAAttention, # subtleyolov8-emaattention
 )
 from .conv import (
     CBAM,
@@ -187,4 +188,5 @@ __all__ = (
     "DySnakeConv", # subtleyolov8-dysnakeconv
     "BottleneckDySnakeConv", # subtleyolov8-dysnakeconv
     "C2fDySnakeConv", # subtleyolov8-dysnakeconv
+    "EMAAttention", # subtleyolov8-emaattention
 )
