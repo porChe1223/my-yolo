@@ -50,6 +50,7 @@ from ultralytics.nn.modules import (
     DWConv,
     DWConvTranspose2d,
     DySnakeConv, # subtleyolov8-dysnakeconv
+    EMAAttention, # subtleyolov8-emaattention
     Focus,
     GhostBottleneck,
     GhostConv,
@@ -1561,6 +1562,7 @@ def parse_model(d, ch, verbose=True):
             DySnakeConv, # subtleyolov8-dysnakeconv
             BottleneckDySnakeConv, # subtleyolov8-dysnakeconv
             C2fDySnakeConv, # subtleyolov8-dysnakeconv
+            EMAAttention, # subtleyolov8-emaattention
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
