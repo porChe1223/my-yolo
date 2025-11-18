@@ -37,9 +37,11 @@ from .block import (
     BNContrastiveHead,
     Bottleneck,
     BottleneckCSP,
+    BottleneckDySnakeConv,  # subtleyolov8-dysnakeconv
     C2f,
     C2fAttn,
     C2fCIB,
+    C2fDySnakeConv,  # subtleyolov8-dysnakeconv
     C2fPSA,
     C3Ghost,
     C3k2,
@@ -47,6 +49,7 @@ from .block import (
     CBFuse,
     CBLinear,
     ContrastiveHead,
+    EMAAttention,  # subtleyolov8-emaattention
     GhostBottleneck,
     HGBlock,
     HGStem,
@@ -59,9 +62,6 @@ from .block import (
     ResNetLayer,
     SCDown,
     TorchVision,
-    BottleneckDySnakeConv, # subtleyolov8-dysnakeconv
-    C2fDySnakeConv, # subtleyolov8-dysnakeconv
-    EMAAttention, # subtleyolov8-emaattention
 )
 from .conv import (
     CBAM,
@@ -70,16 +70,16 @@ from .conv import (
     Conv,
     Conv2,
     ConvTranspose,
+    DSConv,  # subtleyolov8-dysnakeconv
     DWConv,
     DWConvTranspose2d,
+    DySnakeConv,  # subtleyolov8-dysnakeconv
     Focus,
     GhostConv,
     Index,
     LightConv,
     RepConv,
     SpatialAttention,
-    DSConv, # subtleyolov8-dysnakeconv
-    DySnakeConv, # subtleyolov8-dysnakeconv
 )
 from .head import (
     OBB,
@@ -131,9 +131,11 @@ __all__ = (
     "BNContrastiveHead",
     "Bottleneck",
     "BottleneckCSP",
+    "BottleneckDySnakeConv",  # subtleyolov8-dysnakeconv
     "C2f",
     "C2fAttn",
     "C2fCIB",
+    "C2fDySnakeConv",  # subtleyolov8-dysnakeconv
     "C2fPSA",
     "C3Ghost",
     "C3k2",
@@ -147,11 +149,14 @@ __all__ = (
     "Conv",
     "Conv2",
     "ConvTranspose",
+    "DSConv",  # subtleyolov8-dysnakeconv
     "DWConv",
     "DWConvTranspose2d",
     "DeformableTransformerDecoder",
     "DeformableTransformerDecoderLayer",
     "Detect",
+    "DySnakeConv",  # subtleyolov8-dysnakeconv
+    "EMAAttention",  # subtleyolov8-emaattention
     "Focus",
     "GhostBottleneck",
     "GhostConv",
@@ -184,9 +189,4 @@ __all__ = (
     "YOLOEDetect",
     "YOLOESegment",
     "v10Detect",
-    "DSConv", # subtleyolov8-dysnakeconv
-    "DySnakeConv", # subtleyolov8-dysnakeconv
-    "BottleneckDySnakeConv", # subtleyolov8-dysnakeconv
-    "C2fDySnakeConv", # subtleyolov8-dysnakeconv
-    "EMAAttention", # subtleyolov8-emaattention
 )

@@ -34,6 +34,7 @@ __all__ = (
     "C2f",
     "C2fAttn",
     "C2fCIB",
+    "C2fDySnakeConv",  # subtleyolov8-dysnakeconv
     "C2fPSA",
     "C3Ghost",
     "C3k2",
@@ -41,6 +42,8 @@ __all__ = (
     "CBFuse",
     "CBLinear",
     "ContrastiveHead",
+    "DySnakeConvBottleneck",  # subtleyolov8-dysnakeconv
+    "EMAAttention",  # subtleyolov8-emaattention
     "GhostBottleneck",
     "HGBlock",
     "HGStem",
@@ -52,9 +55,6 @@ __all__ = (
     "ResNetLayer",
     "SCDown",
     "TorchVision",
-    "DySnakeConvBottleneck", # subtleyolov8-dysnakeconv
-    "C2fDySnakeConv", # subtleyolov8-dysnakeconv
-    "EMAAttention", # subtleyolov8-emaattention
 )
 
 
@@ -1950,11 +1950,13 @@ class SAVPE(nn.Module):
 
 class BottleneckDySnakeConv(Bottleneck):
     """Standard bottleneck with DySnakeConv."""
+
     def __init__(self, c1, c2, shortcut=True, g=1, k=(3, 3), e=0.5):  # ch_in, ch_out, shortcut, groups, kernels, expand
         super().__init__(c1, c2, shortcut, g, k, e)
         c_ = int(c2 * e)  # hidden channels
         self.cv2 = DySnakeConv(c_, c2, k[1])
         self.cv3 = Conv(c2 * 3, c2, k=1)
+
     def forward(self, x):
         """'forward()' applies the YOLOv5 FPN to input data."""
         return x + self.cv3(self.cv2(self.cv1(x))) if self.add else self.cv3(self.cv2(self.cv1(x)))
@@ -1968,7 +1970,7 @@ class C2fDySnakeConv(C2f):
 
 class EMAAttention(nn.Module):
     def __init__(self, channels, c2=None, factor=32):
-        super(EMAAttention, self).__init__()
+        super().__init__()
         self.groups = factor
         assert channels // self.groups > 0
         self.softmax = nn.Softmax(-1)
@@ -1978,7 +1980,7 @@ class EMAAttention(nn.Module):
         self.gn = nn.GroupNorm(channels // self.groups, channels // self.groups)
         self.conv1x1 = nn.Conv2d(channels // self.groups, channels // self.groups, kernel_size=1, stride=1, padding=0)
         self.conv3x3 = nn.Conv2d(channels // self.groups, channels // self.groups, kernel_size=3, stride=1, padding=1)
- 
+
     def forward(self, x):
         b, c, h, w = x.size()
         group_x = x.reshape(b * self.groups, -1, h, w)  # b*g,c//g,h,w
