@@ -37,6 +37,7 @@ from ultralytics.nn.modules import (
     C2fPSA,
     C3Ghost,
     C3k2,
+    C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
     C3x,
     CBFuse,
     CBLinear,
@@ -1563,6 +1564,7 @@ def parse_model(d, ch, verbose=True):
             BottleneckDySnakeConv,  # subtleyolov8-dysnakeconv
             C2fDySnakeConv,  # subtleyolov8-dysnakeconv
             EMAAttention,  # subtleyolov8-emaattention
+            C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1582,7 +1584,8 @@ def parse_model(d, ch, verbose=True):
             C2fCIB,
             C2PSA,
             A2C2f,
-            C2fDySnakeConv,
+            C2fDySnakeConv,  # subtleyolov8-dysnakeconv
+            C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
         }
     )
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
@@ -1610,7 +1613,7 @@ def parse_model(d, ch, verbose=True):
             if m in repeat_modules:
                 args.insert(2, n)  # number of repeats
                 n = 1
-            if m is C3k2:  # for M/L/X sizes
+            if m in frozenset({C3k2, C3k2DySbakeConv}):  # for M/L/X sizes
                 legacy = False
                 if scale in "mlx":
                     args[3] = True

@@ -38,6 +38,7 @@ __all__ = (
     "C2fPSA",
     "C3Ghost",
     "C3k2",
+    "C3k2DySnakeConv",  # subtleyolo11-dysnakeconv
     "C3x",
     "CBFuse",
     "CBLinear",
@@ -1965,6 +1966,14 @@ class BottleneckDySnakeConv(Bottleneck):
 class C2fDySnakeConv(C2f):
     def __init__(self, c1, c2, n=1, shortcut=False, g=1, e=0.5):
         super().__init__(c1, c2, n, shortcut, g, e)
+        self.m = nn.ModuleList(BottleneckDySnakeConv(self.c, self.c, shortcut, g, k=(3, 3), e=1.0) for _ in range(n))
+
+
+class C3k2DySnakeConv(C3k2):
+    """C3k2 module with DySnakeConv bottlenecks for YOLOv11 SubtleYOLO."""
+
+    def __init__(self, c1, c2, n=1, c3k=False, e=0.5, g=1, shortcut=True):
+        super().__init__(c1, c2, n, c3k, e, g, shortcut)
         self.m = nn.ModuleList(BottleneckDySnakeConv(self.c, self.c, shortcut, g, k=(3, 3), e=1.0) for _ in range(n))
 
 
