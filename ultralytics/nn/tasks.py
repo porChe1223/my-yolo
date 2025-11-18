@@ -1613,7 +1613,7 @@ def parse_model(d, ch, verbose=True):
             if m in repeat_modules:
                 args.insert(2, n)  # number of repeats
                 n = 1
-            if m in frozenset({C3k2, C3k2DySbakeConv}):  # for M/L/X sizes
+            if m in frozenset({C3k2, C3k2DySnakeConv}):  # for M/L/X sizes
                 legacy = False
                 if scale in "mlx":
                     args[3] = True
