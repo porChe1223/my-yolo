@@ -37,7 +37,7 @@ from ultralytics.nn.modules import (
     C2fPSA,
     C3Ghost,
     C3k2,
-    C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
+    C3k2DySnakeConv,  # subtleyolo11-dysnakeconv
     C3x,
     CBFuse,
     CBLinear,
@@ -1564,7 +1564,7 @@ def parse_model(d, ch, verbose=True):
             BottleneckDySnakeConv,  # subtleyolov8-dysnakeconv
             C2fDySnakeConv,  # subtleyolov8-dysnakeconv
             EMAAttention,  # subtleyolov8-emaattention
-            C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
+            C3k2DySnakeConv,  # subtleyolo11-dysnakeconv
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1585,7 +1585,7 @@ def parse_model(d, ch, verbose=True):
             C2PSA,
             A2C2f,
             C2fDySnakeConv,  # subtleyolov8-dysnakeconv
-            C3k2DySbakeConv,  # subtleyolo11-dysnakeconv
+            C3k2DySnakeConv,  # subtleyolo11-dysnakeconv
         }
     )
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
