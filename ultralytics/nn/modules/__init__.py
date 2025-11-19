@@ -45,6 +45,7 @@ from .block import (
     C2fPSA,
     C3Ghost,
     C3k2,
+    C3k2DySnakeConv,  # subtleyolo11-dysnakeconv
     C3x,
     CBFuse,
     CBLinear,
@@ -139,6 +140,7 @@ __all__ = (
     "C2fPSA",
     "C3Ghost",
     "C3k2",
+    "C3k2DySnakeConv",  # subtleyolo11-dysnakeconv
     "C3x",
     "CBFuse",
     "CBLinear",
