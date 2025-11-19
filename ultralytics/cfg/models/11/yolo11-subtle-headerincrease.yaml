@@ -39,11 +39,13 @@ head:
   - [[-1, 4], 1, Concat, [1]] # cat backbone P3
   - [-1, 2, C3k2, [256, False]] # 16 (P3/8-small)
 
+  # subtleyolov11-headerincrease
   - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
   - [[-1, 2], 1, Concat, [1]] # cat backbone P2
-  - [-1, 2, C3k2, [256, False]] # 19 (P2/4-tiny)
+  - [-1, 2, C3k2, [128, False]] # 19 (P2/4-tiny)
 
-  - [-1, 1, Conv, [256, 3, 2]]
+  # subtleyolov11-headerincrease
+  - [-1, 1, Conv, [128, 3, 2]]
   - [[-1, 16], 1, Concat, [1]] # cat head P3
   - [-1, 2, C3k2, [256, False]] # 22 (P3/8-small)
 
